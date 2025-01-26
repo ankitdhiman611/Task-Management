@@ -1,4 +1,35 @@
 <?php
+    include "config.php";
+
+
+if(!empty($_POST['name']) and !empty($_POST['email']) and !empty($_POST['password']) and !empty($_POST['mobile']))
+{
+    $nm=$_POST['name'];
+    $em=$_POST['email'];
+    $pass=md5($_POST['password']);
+    $mob=$_POST['mobile'];
+    $flag=0;
+    $q1="select * from registration where email='$em'";
+    $z1=mysqli_query($con,$q1);
+    while($rows=mysqli_fetch_array($z1))
+    {
+        $flag=1;
+        break;
+    }
+    if($flag==0)
+    {
+        $q="insert into registration(name,email,password,mobile)values('$nm','$em','$pass','$mob')";
+        if(mysqli_query($con,$q)==true)
+        {
+            echo "<script>alert('register successfully');</script>";
+            echo "<script>window.location='user_login.php';</script>";
+        }
+}
+    else
+    {
+        $message= "this email id: $em is already exist";
+    }
+}
 
 
 ?>
@@ -17,29 +48,34 @@
             <center><h1 id="userloginheading">User Registration</h1></center><br>
             <form action="" method="post">
             <div class="form-group">
-                    Enter your username : <input type="text" name="nm" class="form-control" required><br>
+                    Enter your username : <input type="text" name="name" class="form-control" required><br>
                 </div>
                 <div class="form-group">
-                    Enter your email : <input type="email" name="em" class="form-control" required><br>
+                    Enter your email : <input type="email" name="email" class="form-control" required><br>
                 </div>
                 <div class="form-group">
-                    Enter your password : <input type="password" name="pass" class="form-control" required><br>
+                    Enter your password : <input type="password" name="password" class="form-control" required><br>
                 </div>   
                 <div class="form-group">
-                    Enter your mobile : <input type="number" name="mob" class="form-control" required><br>
+                    Enter your mobile : <input type="number" name="mobile" class="form-control" required><br>
                 </div> 
                 <div class="form-group">
                     <center>
                     <input type="submit" name="userreg" value="Register"  class="btn btn-warning"> &nbsp 
                     <a href="taskmanagement.php" class="btn btn-warning">Go Back</a><br><br>
                     <a href="user_login.php" class="btn btn-success">Already have an account.</a>
-
-
                     </center>
                     
                 </div>
                
             </form>
+            <?php
+                        if(!empty($message))
+                        {
+                            echo "<h1>$message</h1>";
+                        }
+
+                ?>
         </div>
     </div>
 

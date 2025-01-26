@@ -1,4 +1,30 @@
 <?php
+session_start();
+include "config.php";
+if(!empty($_POST['email']) and !empty($_POST['password']))
+{
+    
+    $em=$_POST['email'];
+    $pass=md5($_POST['password']);
+   
+    $flag=0;
+    $q1="select * from registration where email='$em' and password='$pass'";
+    $z=mysqli_query($con,$q1);
+    while($rows=mysqli_fetch_array($z))
+    {
+        $flag=1;
+        $_session['matchit']=$em;
+
+    }
+    if($flag==0)
+    {
+       $message="incorrect email and password";   
+    }
+    else
+    {
+        echo "<script>window.location='user_dashboard.php';</script>";
+    }
+}
 
 
 ?>
@@ -17,10 +43,10 @@
             <center><h1 id="userloginheading">User Login</h1></center><br>
             <form action="" method="post">
                 <div class="form-group">
-                    Enter your email : <input type="email" name="em" class="form-control" required><br>
+                    Enter your email : <input type="email" name="email" class="form-control" required><br>
                 </div>
                 <div class="form-group">
-                    Enter your password : <input type="password" name="pass" class="form-control" required><br>
+                    Enter your password : <input type="password" name="password" class="form-control" required><br>
                 </div>    
                 <div class="form-group">
                     <center>
@@ -30,6 +56,13 @@
                 </div>
                
             </form>
+            <?php
+                        if(!empty($message))
+                        {
+                            echo "<h1>$message</h1>";
+                        }
+
+                ?>
         </div>
     </div>
 

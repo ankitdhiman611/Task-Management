@@ -1,5 +1,24 @@
 <?php
+session_start();
+if(!empty($_POST['email']) and !empty($_POST['password']))
+{
+    $em=$_POST['email'];
+    $pass=$_POST['password'];
 
+    $admin_em="ankit@gmail.com";
+    $admin_pass="ankit123";
+
+    if($em===$admin_em && $pass===$admin_pass)
+    {
+        $_SESSION['admin']=$em;
+        echo "<script>window.location='admin-dashboard.php';</script>";
+    }
+    else
+    {
+
+       $message="please enter correct email and password";
+    }
+}
 
 ?>
 <!DOCTYPE html>
@@ -17,10 +36,10 @@
             <center><h1 id="userloginheading">Admin Login</h1></center><br>
             <form action="" method="post">
                 <div class="form-group">
-                    Enter your email : <input type="email" name="em" class="form-control" required><br>
+                    Enter your email : <input type="email" name="email" class="form-control" required><br>
                 </div>
                 <div class="form-group">
-                    Enter your password : <input type="password" name="pass" class="form-control" required><br>
+                    Enter your password : <input type="password" name="password" class="form-control" required><br>
                 </div>    
                 <div class="form-group">
                     <center>
@@ -30,6 +49,12 @@
                 </div>
                
             </form>
+            <?php
+                if(!empty($message))
+                {
+                    echo "$message";
+                }
+            ?>
         </div>
     </div>
 
